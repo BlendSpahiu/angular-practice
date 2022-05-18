@@ -1,0 +1,32 @@
+<form [formGroup]="editTaskForm" class="flex flex-col w-[400px]">
+  <mat-form-field>
+    <mat-label>Task Name </mat-label>
+    <input
+      matInput
+      formControlName="taskName"
+      type="text"
+      value="{{ task.taskName }}"
+    />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Task Description </mat-label>
+    <input
+      type="text"
+      matInput
+      formControlName="taskDescription"
+      value="{{ task.taskDescription }}"
+    />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Task Deadline</mat-label>
+    <input
+      matInput
+      formControlName="taskDeadline"
+      type="date"
+      value="{{ task.taskDeadline }}"
+    />
+  </mat-form-field>
+  <button [mat-dialog-close]="true" mat-raised-button color="basic">
+    Close
+  </button>
+</form>

@@ -1,0 +1,61 @@
+<div *ngIf="tasks.length === 0" class="mt-32 text-center">
+  <svg
+    class="w-12 h-12 mx-auto text-gray-400"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    aria-hidden="true"
+  >
+    <path
+      vector-effect="non-scaling-stroke"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+    />
+  </svg>
+  <h3 class="text-sm font-medium text-gray-900">No Tasks Yet</h3>
+  <p class="text-sm text-gray-500">Get started by creating a new task.</p>
+  <div class="mt-2">
+    <button
+      routerLink="/new-task"
+      mat-raised-button
+      color="basic"
+      type="button"
+    >
+      New Task
+    </button>
+  </div>
+</div>
+
+<div class="flex flex-col-reverse w-1/2 pb-10 mx-auto mt-10 space-y-4">
+  <mat-card class="borde" *ngFor="let task of tasks; let index = index">
+    <mat-card-header
+      class="mb-6 border-b"
+      [textContent]="'Task number: ' + (index + 1)"
+    >
+    </mat-card-header>
+
+    <mat-card-content>
+      <p>Task name: {{ task.taskName }}</p>
+      <p class="pt-4">Task description: {{ task.taskDescription }}</p>
+      <p class="pt-4">Task deadline: {{ task.taskDeadline }}</p>
+    </mat-card-content>
+
+    <div class="flex items-center space-x-4">
+      <mat-checkbox
+        (change)="markTaskAsDone(task.id, task.isDone)"
+        [checked]="task.isDone === true"
+        >Done</mat-checkbox
+      >
+      <mat-card-actions class="actions">
+        <button color="warn" (click)="deleteTask(task.id)" mat-raised-button>
+          Delete
+        </button>
+        <button color="basic" (click)="editTask(task.id)" mat-raised-button>
+          Edit
+        </button>
+      </mat-card-actions>
+    </div>
+  </mat-card>
+</div>
