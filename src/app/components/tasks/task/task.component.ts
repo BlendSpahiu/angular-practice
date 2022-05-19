@@ -1,11 +1,11 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import { TaskService } from 'src/app/services/task.service';
 import { Task } from 'src/models/Task';
 
 @Component({
@@ -14,13 +14,6 @@ import { Task } from 'src/models/Task';
   styleUrls: ['./task.component.scss'],
 })
 export class TaskComponent implements OnInit {
-  @Input() task = {
-    taskName: '',
-    taskDescription: '',
-    taskDeadline: '',
-  };
-  @Input() test = '';
-
   editTaskForm = new FormGroup({
     taskName: new FormControl('', Validators.required),
     taskDescription: new FormControl('', Validators.required),
@@ -28,9 +21,28 @@ export class TaskComponent implements OnInit {
     isDone: new FormControl(false, Validators.required),
   });
 
-  constructor() {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: Task,
+    private taskService: TaskService,
+    private dialog: MatDialog
+  ) {}
+
+  test_yes_something = 'good!';
+
+  updateFields(data: Task) {
+    this.editTaskForm.patchValue({ ...data });
+  }
+
+  updateTask() {
+    this.taskService
+      .updateTask(this.data.id, {
+        ...this.editTaskForm.value,
+      })
+      .subscribe((data) => this.updateFields(data));
+    this.dialog.closeAll();
+  }
 
   ngOnInit(): void {
-    console.log(this.test);
+    this.updateFields(this.data);
   }
 }

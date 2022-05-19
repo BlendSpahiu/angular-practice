@@ -41,6 +41,18 @@ export class TaskService {
     return this.http.delete(`${this.databaseURL}/${id}`);
   }
 
+  updateTask(id: number, task: Task): Observable<Task> {
+    return this.http.put<Task>(
+      `${this.databaseURL}/${id}`,
+      { ...task },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+  }
+
   markAsDone(value: boolean, id: number): Observable<boolean> {
     return this.http.put<boolean>(
       `${this.databaseURL}/${id}`,

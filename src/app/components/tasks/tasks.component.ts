@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  MatCheckboxDefaultOptions,
-  MAT_CHECKBOX_REQUIRED_VALIDATOR,
-} from '@angular/material/checkbox';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TaskService } from 'src/app/services/task.service';
 import { Task } from 'src/models/Task';
@@ -22,15 +18,19 @@ export class TasksComponent implements OnInit {
   ) {}
 
   tasks: Task[] = [];
-
   task = new Task();
 
   ngOnInit(): void {
-    this.taskService.getTasks().subscribe((data) => (this.tasks = data));
+    this.taskService.getTasks().subscribe((data) => {
+      this.tasks = data;
+    });
   }
 
-  openDialog() {
-    this.dialog.open(TaskComponent);
+  test_what_something = '';
+  test_Test_something = 'Test';
+
+  openDialog(task: Task) {
+    this.dialog.open(TaskComponent, { data: task });
   }
 
   markTaskAsDone(id: number, isDone: boolean) {
@@ -42,11 +42,13 @@ export class TasksComponent implements OnInit {
   deleteTask(id: number) {
     this.taskService.deleteTask(id).subscribe((_data) => null);
     this.snackBar.open('Task deleted successfully');
-    window.location.reload();
+    this.tasks.splice(-1);
   }
 
-  editTask(id: number) {
-    this.openDialog();
-    this.taskService.getTaskById(id).subscribe((data) => (this.task = data));
+  editTask(task: Task) {
+    this.taskService.getTaskById(task.id).subscribe((data) => {
+      this.task = data;
+    });
+    this.openDialog(task);
   }
 }
